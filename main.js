@@ -1,95 +1,94 @@
-function GameBoard() {
-    const rows = 3;
-    const columns = 3;
-    const board = [];
+const GameBoard = () => {
+	const board = ["", "", "", "", "", "", "", "", ""];
 
-    for (let i = 0; i < rows; i++) {
-        board[i] = [];
-        for (let j = 0; j < columns; j++) {
-            board[i].push(Cell());
-        }
-    }
+	const markBoard = (number, player) => {
+		if (board[number] === "") {
+			board[number] = player;
+			return true;
+		} else {
+			console.log("INVALID MOVE");
+			return false;
+		}
+	};
 
-    const getBoard = () => board;
+	const getBoard = () => board;
 
-    const markBoard = (row, column, player) => {
-        if (board[row][column].getValue() === "") {
-            board[row][column].addMark(player);
-            return true;
-        } else {
-            console.log("INVALID MOVE");
-            return false;
-        }
-    };
+	const printBoard = () => {
+		const actualBoard = [];
+		for (let i = 0; i < 3; i++) {
+			const start = i * 3;
+			const end = (i + 1) * 3;
+			actualBoard.push(board.slice(start, end));
+		}
+		return actualBoard;
+	};
 
-    const printBoard = () => {
-        const boardWithCellValues = board.map((row) =>
-            row.map((cell) => cell.getValue()),
-        );
-        console.table(boardWithCellValues);
-    };
+	return {
+		getBoard,
+		markBoard,
+		printBoard,
+	};
+};
 
-    return {
-        getBoard,
-        markBoard,
-        printBoard,
-    };
-}
+const GameFlow = (playerOneName = "Player X", playerTwoName = "Player O") => {
+	const board = GameBoard();
 
-function Cell() {
-    let value = "";
-    const addMark = (player) => {
-        value = player;
-    };
+	const players = [
+		{
+			name: playerOneName,
+			mark: "X",
+			markSpaces: [],
+		},
+		{
+			name: playerTwoName,
+			mark: "O",
+			markSpaces: [],
+		},
+	];
 
-    const getValue = () => value;
+	let activePlayer = players[0];
 
-    return {
-        addMark,
-        getValue,
-    };
-}
+	const switchPlayerTurn = () => {
+		activePlayer = activePlayer === players[0] ? players[1] : players[0];
+	};
 
-function GameFlow(playerOneName = "Player X", playerTwoName = "Player O") {
-    const board = GameBoard();
+	const getActivePlayer = () => activePlayer;
 
-    const players = [
-        {
-            name: playerOneName,
-            mark: "X",
-        },
-        {
-            name: playerTwoName,
-            mark: "O",
-        },
-    ];
+	// const checkWin = () => {
+	// };
 
-    let activePlayer = players[0];
+	// [0, 1, 2], // Row 1
+	// [3, 4, 5], // Row 2
+	// [6, 7, 8], // Row 3
+	// [0, 3, 6], // Column 1
+	// [1, 4, 7], // Column 2
+	// [2, 5, 8], // Column 3
+	// [0, 4, 8], // Diagonal 1
+	// [2, 4, 6], // Diagonal 2
 
-    const switchPlayerTurn = () => {
-        activePlayer = activePlayer === players[0] ? players[1] : players[0];
-    };
+	const printNewRound = () => {
+		console.log(`${getActivePlayer().name}'s turn.`);
+	};
 
-    const getActivePlayer = () => activePlayer;
+	const playRound = (number) => {
+		const player = getActivePlayer();
+		const moveWasSuccessful = board.markBoard(number, player.mark);
+		if (moveWasSuccessful) {
+			switchPlayerTurn();
+			console.log(board.printBoard());
+			printNewRound();
+		} else {
+			console.log("RETRY");
+			console.log(board.printBoard());
+			printNewRound();
+		}
+	};
 
-    const printNewRound = () => {
-        board.printBoard();
-        console.log(`${getActivePlayer().name}'s turn.`);
-    };
-
-    const playRound = (row, column) => {
-        console.log(`Marked ${getActivePlayer().name}'s mark into the table'`);
-        board.markBoard(row, column, getActivePlayer().mark);
-        if (true) {
-            switchPlayerTurn();
-        }
-        printNewRound();
-    };
-
-    return {
-        playRound,
-        getActivePlayer,
-    };
-}
+	return {
+		playRound,
+		getActivePlayer,
+		printNewRound,
+	};
+};
 
 const game = GameFlow();
