@@ -1,5 +1,5 @@
-const GameBoard = () => {
-	const board = ["", "", "", "", "", "", "", "", ""];
+const GameBoard = (() => {
+	let board = ["", "", "", "", "", "", "", "", ""];
 
 	const markBoard = (number, player) => {
 		if (board[number] === "") {
@@ -9,6 +9,40 @@ const GameBoard = () => {
 			console.log("INVALID MOVE");
 			return false;
 		}
+	};
+
+	const checkWin = () => {
+		if (
+			(board[0] === "X" && board[1] === "X" && board[2] === "X") ||
+			(board[3] === "X" && board[4] === "X" && board[5] === "X") ||
+			(board[6] === "X" && board[7] === "X" && board[8] === "X") ||
+			(board[0] === "X" && board[3] === "X" && board[6] === "X") ||
+			(board[1] === "X" && board[4] === "X" && board[7] === "X") ||
+			(board[2] === "X" && board[5] === "X" && board[8] === "X") ||
+			(board[0] === "X" && board[4] === "X" && board[8] === "X") ||
+			(board[2] === "X" && board[4] === "X" && board[6] === "X")
+		) {
+			return "X";
+		}
+
+		if (
+			(board[0] === "O" && board[1] === "O" && board[2] === "O") ||
+			(board[3] === "O" && board[4] === "O" && board[5] === "O") ||
+			(board[6] === "O" && board[7] === "O" && board[8] === "O") ||
+			(board[0] === "O" && board[3] === "O" && board[6] === "O") ||
+			(board[1] === "O" && board[4] === "O" && board[7] === "O") ||
+			(board[2] === "O" && board[5] === "O" && board[8] === "O") ||
+			(board[0] === "O" && board[4] === "O" && board[8] === "O") ||
+			(board[2] === "O" && board[4] === "O" && board[6] === "O")
+		) {
+			return "O";
+		}
+
+		return null;
+	};
+
+	const isFullBoard = () => {
+		return !board.includes("");
 	};
 
 	const getBoard = () => board;
@@ -23,26 +57,31 @@ const GameBoard = () => {
 		return actualBoard;
 	};
 
+	const resetGame = () => {
+		board = ["", "", "", "", "", "", "", "", ""];
+	};
+
 	return {
 		getBoard,
+		isFullBoard,
+		checkWin,
 		markBoard,
 		printBoard,
+		resetGame,
 	};
-};
+})();
 
-const GameFlow = (playerOneName = "Player X", playerTwoName = "Player O") => {
-	const board = GameBoard();
-
+const GameFlow = ((playerOneName = "Player X", playerTwoName = "Player O") => {
+	// Add function to set names
+	// Done with console game
 	const players = [
 		{
 			name: playerOneName,
 			mark: "X",
-			markSpaces: [],
 		},
 		{
 			name: playerTwoName,
 			mark: "O",
-			markSpaces: [],
 		},
 	];
 
@@ -54,32 +93,37 @@ const GameFlow = (playerOneName = "Player X", playerTwoName = "Player O") => {
 
 	const getActivePlayer = () => activePlayer;
 
-	// const checkWin = () => {
-	// };
-
-	// [0, 1, 2], // Row 1
-	// [3, 4, 5], // Row 2
-	// [6, 7, 8], // Row 3
-	// [0, 3, 6], // Column 1
-	// [1, 4, 7], // Column 2
-	// [2, 5, 8], // Column 3
-	// [0, 4, 8], // Diagonal 1
-	// [2, 4, 6], // Diagonal 2
-
 	const printNewRound = () => {
 		console.log(`${getActivePlayer().name}'s turn.`);
 	};
 
 	const playRound = (number) => {
 		const player = getActivePlayer();
-		const moveWasSuccessful = board.markBoard(number, player.mark);
+		const moveWasSuccessful = GameBoard.markBoard(number, player.mark);
 		if (moveWasSuccessful) {
-			switchPlayerTurn();
-			console.log(board.printBoard());
-			printNewRound();
+			const winner = GameBoard.checkWin();
+			if (winner === "X") {
+				console.log("X wins");
+				console.log(GameBoard.printBoard());
+				GameBoard.resetGame();
+			} else if (winner === "O") {
+				console.log("O wins");
+				console.log(GameBoard.printBoard());
+				GameBoard.resetGame();
+			} else {
+				if (GameBoard.isFullBoard()) {
+					console.log("Draw");
+					console.log(GameBoard.printBoard());
+					GameBoard.resetGame();
+				} else {
+					switchPlayerTurn();
+					console.log(GameBoard.printBoard());
+					printNewRound();
+				}
+			}
 		} else {
 			console.log("RETRY");
-			console.log(board.printBoard());
+			console.log(GameBoard.printBoard());
 			printNewRound();
 		}
 	};
@@ -89,6 +133,4 @@ const GameFlow = (playerOneName = "Player X", playerTwoName = "Player O") => {
 		getActivePlayer,
 		printNewRound,
 	};
-};
-
-const game = GameFlow();
+})();
