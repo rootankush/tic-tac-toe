@@ -1,8 +1,67 @@
+:root {
+	--bg-color: #79addc;
+	--board-color: #ffee93;
+	--board-button: #ffc09f;
+
+	--font-main: "Finger Paint", system-ui;
+}
+
 * {
 	margin: 0;
 	padding: 0;
 }
 
+h1 {
+	font-size: 5rem;
+	font-family: var(--font-main);
+}
+
+h2 {
+	font-size: 2rem;
+	font-family: var(--font-main);
+	margin: 1rem;
+}
+
 body {
-  background-color: white;
+	background-color: var(--bg-color);
+}
+
+.container {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#gameBoard {
+	display: grid;
+	background-color: var(--board-color);
+	grid-template-columns: auto auto auto;
+	border: 1px solid #000000;
+	border-radius: 1rem;
+}
+
+.gameBoardButton {
+	margin: 1rem;
+	padding: 2.5rem 3.5rem;
+	font-family: var(--font-main);
+	font-size: 4rem;
+	border: 1px solid #000000;
+	border-radius: 1rem;
+	background-color: var(--board-button);
+}
+
+#buttonBar {
+	margin: 1rem;
+}
+
+.controlButton {
+	background-color: var(--board-button);
+	font-family: var(--font-main);
+	color: #000000;
+	font-size: 2.5rem;
+	padding: 0.5rem 3rem;
+	border: none;
+	border-radius: 0.5rem;
 }

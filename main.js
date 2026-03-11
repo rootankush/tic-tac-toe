@@ -105,16 +105,16 @@ const GameFlow = ((playerOneName = "Player X", playerTwoName = "Player O") => {
 			if (winner === "X") {
 				console.log("X wins");
 				console.log(GameBoard.printBoard());
-				GameBoard.resetGame();
+				console.log("Type GameBoard.resetGame() ");
 			} else if (winner === "O") {
 				console.log("O wins");
 				console.log(GameBoard.printBoard());
-				GameBoard.resetGame();
+				console.log("Type GameBoard.resetGame() ");
 			} else {
 				if (GameBoard.isFullBoard()) {
 					console.log("Draw");
 					console.log(GameBoard.printBoard());
-					GameBoard.resetGame();
+					console.log("Type GameBoard.resetGame() ");
 				} else {
 					switchPlayerTurn();
 					console.log(GameBoard.printBoard());
@@ -133,4 +133,19 @@ const GameFlow = ((playerOneName = "Player X", playerTwoName = "Player O") => {
 		getActivePlayer,
 		printNewRound,
 	};
+})();
+
+const ScreenController = (() => {
+	const boardButtonDiv = document.querySelector(".gameBoardButton");
+	const turnText = document.querySelector(".turnText");
+
+	const updateScreen = () => {
+		boardButtonDiv.textContent = "";
+		const board = GameBoard.getBoard();
+		const activePlayer = GameFlow.getActivePlayer();
+
+		turnText.textContent = `${activePlayer.name}'s turn`;
+	};
+
+	const clickHandlerBoard = () => {};
 })();
