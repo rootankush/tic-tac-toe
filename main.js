@@ -140,6 +140,11 @@ const ScreenController = (() => {
 	const turnText = document.querySelector(".turnText");
 	const buttonBar = document.querySelector("#buttonBar");
 
+	const controlButton = document.createElement("button");
+	controlButton.classList.add("controlButton");
+	controlButton.textContent = "New";
+	buttonBar.appendChild(controlButton);
+
 	const updateScreen = () => {
 		boardDiv.textContent = "";
 
@@ -159,7 +164,7 @@ const ScreenController = (() => {
 
 		if (GameBoard.checkWin() === "X" || GameBoard.checkWin() === "O") {
 			turnText.textContent = `${activePlayer.name} Won`;
-			boardDiv.remove();
+			boardDiv.style.pointerEvents = "none";
 		} else if (GameBoard.isFullBoard()) {
 			turnText.textContent = `Its a Draw`;
 		}
@@ -173,6 +178,11 @@ const ScreenController = (() => {
 		updateScreen();
 	};
 	boardDiv.addEventListener("click", clickHandlerBoard);
+	controlButton.addEventListener("click", () => {
+		GameBoard.resetGame();
+		boardDiv.style.pointerEvents = "auto";
+		updateScreen();
+	});
 	// make a reset button
 
 	updateScreen();
