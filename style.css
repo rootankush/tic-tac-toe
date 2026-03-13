@@ -37,14 +37,17 @@ body {
 #gameBoard {
 	display: grid;
 	background-color: var(--board-color);
-	grid-template-columns: auto auto auto;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+	gap: 1rem;
+	padding: 1rem;
 	border: 1px solid #000000;
 	border-radius: 1rem;
 }
 
 .gameBoardButton {
-	margin: 1rem;
-	padding: 2.5rem 3.5rem;
+	height: 10rem;
+	width: 10rem;
 	font-family: var(--font-main);
 	font-size: 4rem;
 	border: 1px solid #000000;

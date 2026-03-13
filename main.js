@@ -42,7 +42,7 @@ const GameBoard = (() => {
 	};
 
 	const isFullBoard = () => {
-		return !board.includes("");
+		return !board.includes("") && true;
 	};
 
 	const getBoard = () => board;
@@ -136,16 +136,51 @@ const GameFlow = ((playerOneName = "Player X", playerTwoName = "Player O") => {
 })();
 
 const ScreenController = (() => {
-	const boardButtonDiv = document.querySelector(".gameBoardButton");
+	const boardDiv = document.querySelector("#gameBoard");
 	const turnText = document.querySelector(".turnText");
+	const buttonBar = document.querySelector("#buttonBar");
 
 	const updateScreen = () => {
-		boardButtonDiv.textContent = "";
+		boardDiv.textContent = "";
+
 		const board = GameBoard.getBoard();
 		const activePlayer = GameFlow.getActivePlayer();
 
 		turnText.textContent = `${activePlayer.name}'s turn`;
+
+		// This is displaying the board correctly
+		board.forEach((mark, number) => {
+			const gameBoardButton = document.createElement("button");
+			gameBoardButton.classList.add("gameBoardButton");
+			gameBoardButton.dataset.index = number;
+			gameBoardButton.textContent = mark;
+			boardDiv.appendChild(gameBoardButton);
+		});
+
+		if (GameBoard.checkWin() === "X" || GameBoard.checkWin() === "O") {
+			turnText.textContent = `${activePlayer.name} Won`;
+			boardDiv.remove();
+		} else if (GameBoard.isFullBoard()) {
+			turnText.textContent = `Its a Draw`;
+		}
 	};
 
-	const clickHandlerBoard = () => {};
+	const clickHandlerBoard = (e) => {
+		const selectedButton = e.target.dataset.index;
+		if (!selectedButton) return;
+
+		GameFlow.playRound(selectedButton);
+		updateScreen();
+	};
+	boardDiv.addEventListener("click", clickHandlerBoard);
+	// make a reset button
+
+	updateScreen();
+
+	return {
+		updateScreen,
+		clickHandlerBoard,
+	};
 })();
+
+ScreenController();
