@@ -15,6 +15,8 @@ A sleek, lightweight, and intuitive implementation of the classic Paper-and-Penc
 
 - State Management: Highlighting the winning combination for clarity.
 
+[Game Link](https://rootankush.github.io/tic-tac-toe/)
+
 ---
 
 ![Game Board](./assets/img/game.png)
