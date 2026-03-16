@@ -139,6 +139,8 @@ const ScreenController = (() => {
 	const boardDiv = document.querySelector("#gameBoard");
 	const turnText = document.querySelector(".turnText");
 	const buttonBar = document.querySelector("#buttonBar");
+	const winningAudio = new Audio("./assets/winning.mp3");
+	const checkMarkAudio = new Audio("./assets/check_mark.mp3");
 
 	const controlButton = document.createElement("button");
 	controlButton.classList.add("controlButton");
@@ -164,6 +166,7 @@ const ScreenController = (() => {
 
 		if (GameBoard.checkWin() === "X" || GameBoard.checkWin() === "O") {
 			turnText.textContent = `${activePlayer.name} Won`;
+			winningAudio.play();
 			boardDiv.style.pointerEvents = "none";
 		} else if (GameBoard.isFullBoard()) {
 			turnText.textContent = `Its a Draw`;
@@ -175,6 +178,7 @@ const ScreenController = (() => {
 		if (!selectedButton) return;
 
 		GameFlow.playRound(selectedButton);
+		checkMarkAudio.play();
 		updateScreen();
 	};
 	boardDiv.addEventListener("click", clickHandlerBoard);
