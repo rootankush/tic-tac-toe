@@ -139,8 +139,8 @@ const ScreenController = (() => {
 	const boardDiv = document.querySelector("#gameBoard");
 	const turnText = document.querySelector(".turnText");
 	const buttonBar = document.querySelector("#buttonBar");
-	const winningAudio = new Audio("./assets/winning.mp3");
-	const checkMarkAudio = new Audio("./assets/check_mark.mp3");
+	const winningAudio = new Audio("./assets/audio/winning.mp3");
+	const checkMarkAudio = new Audio("./assets/audio/check_mark.mp3");
 
 	const controlButton = document.createElement("button");
 	controlButton.classList.add("controlButton");
